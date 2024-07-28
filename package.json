@@ -1,0 +1,24 @@
+{
+  "name": "filing",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "type": "module",
+  "module": "es2022",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@inquirer/prompts": "^5.3.2",
+    "esrun": "^3.2.26",
+    "inquirer": "^10.1.2",
+    "pdf-lib": "^1.17.1"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7",
+    "typescript": "^5.5.4"
+  }
+}
