@@ -3,6 +3,7 @@
 import { confirm, input, number, select } from "@inquirer/prompts";
 import { exec } from "child_process";
 import fs from "fs";
+import os from "os";
 import path from "path";
 import { PDFDocument } from "pdf-lib";
 import { SUBJECTS } from "./constants";
@@ -14,7 +15,7 @@ const dir_path = process.cwd();
 const answer = await confirm({ message: "Start?" });
 if (!answer) process.exit(0);
 
-for (const subject in SUBJECTS) {
+for (const subject of SUBJECTS) {
   if (!fs.existsSync(subject)) {
     fs.mkdirSync(subject, { recursive: true });
   }
@@ -23,7 +24,7 @@ for (const subject in SUBJECTS) {
 async function begin() {
   for (const file of getAllFiles(dir_path)) {
     if (getFileExtension(file) !== "pdf") continue;
-    exec(`open ${file}`);
+    exec(`open ${os.type() === "Darwin" ? "-a Preview" : ""} "${file}"`);
     const docmentAsBytes = await fs.promises.readFile(file);
     const pdfDoc = await PDFDocument.load(docmentAsBytes);
     console.log(`Opening ${file}. Page count: ${pdfDoc.getPageCount()}`);
@@ -34,6 +35,8 @@ async function begin() {
     });
 
     while (pdfDoc.getPageCount() > 0) {
+      const docmentAsBytes = await fs.promises.readFile(file);
+      const pdfDoc = await PDFDocument.load(docmentAsBytes);
       const page = await number({ message: "Last page" });
       const name = await input({
         message: "Name",
