@@ -3,9 +3,9 @@
 import { confirm, input, number, select } from "@inquirer/prompts";
 import { exec } from "child_process";
 import fs from "fs";
-import os from "os";
 import path from "path";
 import { PDFDocument } from "pdf-lib";
+import { SUBJECTS } from "./constants";
 import getAllFiles from "./utils/getAllFiles";
 import getFileExtension from "./utils/getFileExtension";
 
@@ -23,7 +23,7 @@ for (const subject in SUBJECTS) {
 async function begin() {
   for (const file of getAllFiles(dir_path)) {
     if (getFileExtension(file) !== "pdf") continue;
-    exec(`open ${os.type() === "Darwin" ? "-a Preview" : ""} ${file}`);
+    exec(`open ${file}`);
     const docmentAsBytes = await fs.promises.readFile(file);
     const pdfDoc = await PDFDocument.load(docmentAsBytes);
     console.log(`Opening ${file}. Page count: ${pdfDoc.getPageCount()}`);
